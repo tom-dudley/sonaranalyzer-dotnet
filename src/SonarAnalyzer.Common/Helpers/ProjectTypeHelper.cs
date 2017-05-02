@@ -29,19 +29,9 @@ namespace SonarAnalyzer.Helpers
     {
         public static bool IsTest(this Compilation compilation)
         {
-            var assemblyName = string.Empty;
-            if (compilation.AssemblyName != null)
-            {
-                assemblyName = compilation.AssemblyName;
-            }
-
-            return
-                assemblyName.ToUpperInvariant().Contains(TestAssemblyNamePattern) ||
-                compilation.ReferencedAssemblyNames
-                    .Any(assembly => TestAssemblyNames.Contains(assembly.Name.ToUpperInvariant()));
+            return compilation.ReferencedAssemblyNames
+                       .Any(assembly => TestAssemblyNames.Contains(assembly.Name.ToUpperInvariant()));
         }
-
-        private const string TestAssemblyNamePattern = "TEST";
 
         private static readonly ISet<string> TestAssemblyNames = ImmutableHashSet.Create(
             "MICROSOFT.VISUALSTUDIO.QUALITYTOOLS.UNITTESTFRAMEWORK",
